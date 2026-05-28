@@ -65,7 +65,8 @@ Após criar o projeto:<br>
 - Imagens/Sensor.png
 - A estrutura utiliza:
 - ESP32
-- Sensor DHT22<br>
+- Sensor DHT22
+- https://wokwi.com/projects/462674569149012993 (Link do sensor pronto)<br>
 
 💻 3️⃣ Adicionando o Código Fonte do Sensor<br>
 Após montar o circuito:<br>
@@ -97,7 +98,8 @@ Depois:<br>
 - Imagens/Atuador.png
 - A estrutura utiliza:
 - ESP32
-- Servo Motor<br>
+- Servo Motor
+- https://wokwi.com/projects/464942427055606785 (Link do atuador pronto)<br>
 
 🤖 6️⃣ Adicionando o Código Fonte do Atuador<br>
 Abra o arquivo:<br>
