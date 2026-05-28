@@ -1,11 +1,11 @@
 🌱 Protótipo de Irrigação Automatizada Baseado em IoT para o Fortalecimento da Agricultura Familiar.
 -----------------------------------------------------------------------------------------------------
-- O projeto realiza:
+-O projeto realiza:
 
-- leitura de dados de umidade;
-- envio de informações via MQTT;
-- processamento no Node-RED;
-- acionamento de um servo motor simulando uma válvula/bomba.
+-leitura de dados de umidade;
+-envio de informações via MQTT;
+-processamento no Node-RED;
+-acionamento de um servo motor simulando uma válvula/bomba.
 -----------------------------------------------------------------------------------------------------
 📌 Tecnologias Utilizadas
 ESP32
@@ -18,25 +18,25 @@ OpenWeather API
 Wokwi
 -----------------------------------------------------------------------------------------------------
 🧠 Funcionamento do Projeto
-O sistema funciona em 3 partes:
------------------------------------------------------------------------------------------------------
+-O sistema funciona em 3 partes:
+
 📡 Publisher ESP32
-Responsável por:
-ler os dados do sensor DHT22;
-enviar os dados para o broker MQTT.
------------------------------------------------------------------------------------------------------
+-Responsável por:
+-ler os dados do sensor DHT22;
+-enviar os dados para o broker MQTT.
+
 🔄 Node-RED
-Responsável por:
-receber os dados MQTT;
-consultar a API OpenWeather;
-processar os dados;
-exibir as informações.
------------------------------------------------------------------------------------------------------
+-Responsável por:
+-receber os dados MQTT;
+-consultar a API OpenWeather;
+-processar os dados;
+-exibir as informações.
+
 ⚙️ Atuador ESP32
-Responsável por:
-receber comandos MQTT;
-controlar o servo motor;
-simular abertura e fechamento de uma válvula.
+-Responsável por:
+-receber comandos MQTT;
+-controlar o servo motor;
+-simular abertura e fechamento de uma válvula.
 -----------------------------------------------------------------------------------------------------
 
 🚀  Passos para replicar o projeto:
@@ -45,17 +45,17 @@ Para reproduzir este projeto corretamente, siga o passo a passo abaixo.
 
 🌐 1️⃣ Criando a Conta no Wokwi
 
-Primeiramente, acesse o simulador online Wokwi:
+Primeiramente, acesse o simulador online Wokwi:<br>
 
-Wokwi Simulator
+-Wokwi Simulator
 
-Após acessar:
-Crie sua conta;
-Faça login na plataforma;
-Clique em:
-New Project
-Selecione a placa:
-ESP32 Arduino
+-Após acessar:
+-Crie sua conta;
+-Faça login na plataforma;
+-Clique em:
+-New Project
+-Selecione a placa:
+-ESP32 Arduino
 
 📡 2️⃣ Montando o Circuito do Sensor
 Após criar o projeto:
