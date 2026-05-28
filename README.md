@@ -228,5 +228,5 @@ https://youtu.be/JcLJaScRvEA<br>
 
 👨‍💻 Autores<br>
 - Lucas Arenda Silveira - 10436971
-- Leonardo Buzzoni Jaime - 10443802
+- Leonardo Buzzoni Jaime - 10443802<br>
 Universidade Presbiteriana Mackenzie
