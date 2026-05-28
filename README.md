@@ -85,12 +85,11 @@ O ESP32 Publisher será responsável por:<br>
 - publicar os dados MQTT no tópico:
 - sistemaAgricola/umidade<br>
 
-Os dados enviados possuem formato JSON:
+Os dados enviados possuem formato JSON:<br>
 
-{
-  "umidade": 45.30
-}
-<br>
+{<br>
+  "umidade": 45.30<br>
+}<br>
 ⚙️ 5️⃣ Configurando o Atuador<br>
 Crie um novo projeto ESP32 no Wokwi.<br>
 Depois:<br>
