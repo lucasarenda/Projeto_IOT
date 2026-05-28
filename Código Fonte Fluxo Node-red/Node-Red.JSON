@@ -1,0 +1,329 @@
+[
+    {
+        "id": "0e068b3b8fea6d01",
+        "type": "tab",
+        "label": "Fluxo 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "c8b264e5abb49cbc",
+        "type": "mqtt in",
+        "z": "0e068b3b8fea6d01",
+        "name": "mqtt-mack-umidade",
+        "topic": "sistemaAgricula/umidade",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "98ac71e395da8e0a",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 120,
+        "wires": [
+            [
+                "24dfca0f3f62e808"
+            ]
+        ]
+    },
+    {
+        "id": "d8d5aee1dc79010f",
+        "type": "http request",
+        "z": "0e068b3b8fea6d01",
+        "name": "OpenWeather API",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://api.openweathermap.org/data/2.5/weather?q= Sao%20Paulo ,BR&APPID=SUA_API_KEY&units=metric&lang=pt_br",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 290,
+        "y": 240,
+        "wires": [
+            [
+                "b5a26305e1224370"
+            ]
+        ]
+    },
+    {
+        "id": "df2b94e8ef61140f",
+        "type": "inject",
+        "z": "0e068b3b8fea6d01",
+        "name": "Timer 5 min",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "300",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 110,
+        "y": 240,
+        "wires": [
+            [
+                "d8d5aee1dc79010f"
+            ]
+        ]
+    },
+    {
+        "id": "b5a26305e1224370",
+        "type": "change",
+        "z": "0e068b3b8fea6d01",
+        "name": "Isola Clima e Temp",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{   \"temp\": payload.main.temp,   \"tempo\": payload.weather[0].description}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "api",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 490,
+        "y": 240,
+        "wires": [
+            [
+                "852a79b1f089f323"
+            ]
+        ]
+    },
+    {
+        "id": "852a79b1f089f323",
+        "type": "join",
+        "z": "0e068b3b8fea6d01",
+        "name": "Agrupa Dados",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": false,
+        "accumulate": true,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 710,
+        "y": 180,
+        "wires": [
+            [
+                "b3f0d1afed3b906e",
+                "3042412a1bc64db5"
+            ]
+        ]
+    },
+    {
+        "id": "24dfca0f3f62e808",
+        "type": "change",
+        "z": "0e068b3b8fea6d01",
+        "name": "Isola Umidade",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.umidade",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "sensor",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 500,
+        "y": 120,
+        "wires": [
+            [
+                "852a79b1f089f323"
+            ]
+        ]
+    },
+    {
+        "id": "b3f0d1afed3b906e",
+        "type": "function",
+        "z": "0e068b3b8fea6d01",
+        "name": "Regra de Negócio Inteligente",
+        "func": "var umidade = msg.payload.sensor;\nvar dadosAPI = msg.payload.api;\n\nvar tempPadrao = (dadosAPI && dadosAPI.temp !== undefined) ? Number(dadosAPI.temp) : 22.0;\nvar umidadeNum = (umidade !== undefined) ? Number(umidade) : 0.0;\nvar condicaoClima = (dadosAPI && dadosAPI.tempo !== undefined) ? dadosAPI.tempo.toLowerCase() : \"limpo\";\n\nvar comandoBomba = \"OFF\";\n\nif (umidadeNum < 30.0) {\n    if (condicaoClima.includes(\"chuva\") || condicaoClima.includes(\"chuvisco\") ||\n condicaoClima.includes(\"temporal\") || condicaoClima.includes(\"tormenta\")) {\n        comandoBomba = \"OFF\";\n    } else {\n        comandoBomba = \"ON\";\n    }\n} else {\n    comandoBomba = \"OFF\";\n}\n\nvar msgInflux = {\n    payload: {\n        umidade: Number(umidadeNum.toFixed(2)),\n        temperatura: Number(tempPadrao.toFixed(2)),\n        bomba_status: (comandoBomba === \"ON\") ? 1.0 : 0.0, \n        tempo: condicaoClima \n    }\n};\n\nvar msgAtuador = {\n    payload: comandoBomba,\n    topic: \"MACK10436971/bomba\" \n};\n\nreturn [msgInflux, msgAtuador];\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 180,
+        "wires": [
+            [
+                "0691698a888955bb",
+                "55f67cdde1a9d490"
+            ],
+            [
+                "49176897de104ed1"
+            ]
+        ]
+    },
+    {
+        "id": "49176897de104ed1",
+        "type": "mqtt out",
+        "z": "0e068b3b8fea6d01",
+        "name": "Enviar para o Atuador",
+        "topic": "sistemaAgricola/bomba",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "98ac71e395da8e0a",
+        "x": 1240,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "0691698a888955bb",
+        "type": "debug",
+        "z": "0e068b3b8fea6d01",
+        "name": "Log Decisão",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1210,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "55f67cdde1a9d490",
+        "type": "influxdb out",
+        "z": "0e068b3b8fea6d01",
+        "influxdb": "13e8f47f575e3068",
+        "name": "",
+        "measurement": "dados_agricultura",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "ec3e9247f8f6d562",
+        "bucket": "projeto",
+        "x": 1250,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "3042412a1bc64db5",
+        "type": "debug",
+        "z": "0e068b3b8fea6d01",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 810,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "98ac71e395da8e0a",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "13e8f47f575e3068",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": 8086,
+        "protocol": "http",
+        "database": "database",
+        "name": "influxdb",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "https://us-east-1-1.aws.cloud2.influxdata.com/",
+        "timeout": 10,
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "6ab5473824f9211a",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-influxdb": "0.7.0"
+        }
+    }
+]
