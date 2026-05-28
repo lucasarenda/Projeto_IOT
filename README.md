@@ -1,11 +1,11 @@
 🌱 Protótipo de Irrigação Automatizada Baseado em IoT para o Fortalecimento da Agricultura Familiar.
 -----------------------------------------------------------------------------------------------------
-O projeto realiza:
+- O projeto realiza:
 
-leitura de dados de umidade;
-envio de informações via MQTT;
-processamento no Node-RED;
-acionamento de um servo motor simulando uma válvula/bomba.
+- leitura de dados de umidade;
+- envio de informações via MQTT;
+- processamento no Node-RED;
+- acionamento de um servo motor simulando uma válvula/bomba.
 -----------------------------------------------------------------------------------------------------
 📌 Tecnologias Utilizadas
 ESP32
