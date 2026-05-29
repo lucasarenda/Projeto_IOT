@@ -140,8 +140,7 @@
         "y": 180,
         "wires": [
             [
-                "b3f0d1afed3b906e",
-                "3042412a1bc64db5"
+                "b3f0d1afed3b906e"
             ]
         ]
     },
@@ -184,7 +183,7 @@
         "type": "function",
         "z": "0e068b3b8fea6d01",
         "name": "Regra de Negócio Inteligente",
-        "func": "var umidade = msg.payload.sensor;\nvar dadosAPI = msg.payload.api;\n\nvar tempPadrao = (dadosAPI && dadosAPI.temp !== undefined) ? Number(dadosAPI.temp) : 22.0;\nvar umidadeNum = (umidade !== undefined) ? Number(umidade) : 0.0;\nvar condicaoClima = (dadosAPI && dadosAPI.tempo !== undefined) ? dadosAPI.tempo.toLowerCase() : \"limpo\";\n\nvar comandoBomba = \"OFF\";\n\nif (umidadeNum < 30.0) {\n    if (condicaoClima.includes(\"chuva\") || condicaoClima.includes(\"chuvisco\") ||\n condicaoClima.includes(\"temporal\") || condicaoClima.includes(\"tormenta\")) {\n        comandoBomba = \"OFF\";\n    } else {\n        comandoBomba = \"ON\";\n    }\n} else {\n    comandoBomba = \"OFF\";\n}\n\nvar msgInflux = {\n    payload: {\n        umidade: Number(umidadeNum.toFixed(2)),\n        temperatura: Number(tempPadrao.toFixed(2)),\n        bomba_status: (comandoBomba === \"ON\") ? 1.0 : 0.0, \n        tempo: condicaoClima \n    }\n};\n\nvar msgAtuador = {\n    payload: comandoBomba,\n    topic: \"MACK10436971/bomba\" \n};\n\nreturn [msgInflux, msgAtuador];\n",
+        "func": "var umidade = msg.payload.sensor;\nvar dadosAPI = msg.payload.api;\n\nvar tempPadrao = (dadosAPI && dadosAPI.temp !== undefined) ? Number(dadosAPI.temp) : 22.0;\nvar umidadeNum = (umidade !== undefined) ? Number(umidade) : 0.0;\nvar condicaoClima = (dadosAPI && dadosAPI.tempo !== undefined) ? dadosAPI.tempo.toLowerCase() : \"limpo\";\n\nvar comandoBomba = \"OFF\";\n\nif (umidadeNum < 30.0) {\n    if (condicaoClima.includes(\"chuva\") || condicaoClima.includes(\"chuvisco\") ||\n condicaoClima.includes(\"temporal\") || condicaoClima.includes(\"tormenta\")) {\n        comandoBomba = \"OFF\";\n    } else {\n        comandoBomba = \"ON\";\n    }\n} else {\n    comandoBomba = \"OFF\";\n}\n\nvar msgInflux = {\n    payload: {\n        umidade: Number(umidadeNum.toFixed(2)),\n        temperatura: Number(tempPadrao.toFixed(2)),\n        bomba_status: (comandoBomba === \"ON\") ? 1.0 : 0.0, \n        tempo: condicaoClima \n    }\n};\n\nvar msgAtuador = {\n    payload: comandoBomba,\n    topic: \"sistemaAgricola/bomba\" \n};\n\nreturn [msgInflux, msgAtuador];\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -195,11 +194,12 @@
         "y": 180,
         "wires": [
             [
-                "0691698a888955bb",
-                "55f67cdde1a9d490"
+                "55f67cdde1a9d490",
+                "39d776014206e2e0"
             ],
             [
-                "49176897de104ed1"
+                "49176897de104ed1",
+                "6c305b052a6ba8da"
             ]
         ]
     },
@@ -218,24 +218,7 @@
         "expiry": "",
         "broker": "98ac71e395da8e0a",
         "x": 1240,
-        "y": 200,
-        "wires": []
-    },
-    {
-        "id": "0691698a888955bb",
-        "type": "debug",
-        "z": "0e068b3b8fea6d01",
-        "name": "Log Decisão",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1210,
-        "y": 100,
+        "y": 280,
         "wires": []
     },
     {
@@ -253,11 +236,11 @@
         "org": "ec3e9247f8f6d562",
         "bucket": "projeto",
         "x": 1250,
-        "y": 280,
+        "y": 100,
         "wires": []
     },
     {
-        "id": "3042412a1bc64db5",
+        "id": "6c305b052a6ba8da",
         "type": "debug",
         "z": "0e068b3b8fea6d01",
         "name": "debug 1",
@@ -268,8 +251,24 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 810,
-        "y": 320,
+        "x": 1130,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "39d776014206e2e0",
+        "type": "debug",
+        "z": "0e068b3b8fea6d01",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1190,
+        "y": 160,
         "wires": []
     },
     {
@@ -319,7 +318,7 @@
         "rejectUnauthorized": true
     },
     {
-        "id": "6ab5473824f9211a",
+        "id": "e24ea9cb53177fbb",
         "type": "global-config",
         "env": [],
         "modules": {
