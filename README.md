@@ -1,5 +1,5 @@
 🌱 Protótipo de Irrigação Automatizada Baseado em IoT para o Fortalecimento da Agricultura Familiar.
------------------------------------------------------------------------------------------------------<br>
+-----------------------------------------------------------------------------------------------------
 O projeto “Protótipo de Irrigação Automatizada para o Fortalecimento da Agricultura Familiar” tem como objetivo desenvolver um sistema inteligente de monitoramento e controle de irrigação, capaz de automatizar o uso da água com base nas condições do solo e do clima. A proposta busca oferecer uma solução acessível e eficiente para apoiar a agricultura familiar, contribuindo para a economia de recursos e a melhoria da produção agrícola.<br>
 
 O projeto realiza:<br>
